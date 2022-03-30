@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->string('client_name')->nullable(false);
+            $table->string('client_name');
             $table->string('phone');
             $table->foreignId('master_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('service_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->dateTime('appointment_time');
+            $table->dateTime('appointment_time')->nullable(true);
             $table->timestamps();
         });
     }
