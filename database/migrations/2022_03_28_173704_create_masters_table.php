@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('masters', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('worked_days')->nullable(true);
-            $table->float('from_hour')->nullable(true);
-            $table->float('to_hour')->nullable(true);
+            $table->string('email');
+            $table->string('worked_days');
+            $table->time('from_hour');
+            $table->time('to_hour');
             $table->timestamps();
         });
     }

@@ -1,3 +1,25 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+.is-invalid {
+    border-color: red;
+}
+
+.invalid-feedback {
+    color: red;
+    align-items: end;
+}
+
+.field {
+    @apply mt-4 flex items-center;
+}
+
+.field-label {
+    @apply w-48 sm:text-right p-2;
+}
+
+.field-control {
+    @apply rounded;
+    width: 220px;
+}

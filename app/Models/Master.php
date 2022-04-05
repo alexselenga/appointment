@@ -10,9 +10,10 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property string $name
+ * @property string $email
  * @property mixed $worked_days
- * @property float $from_hour
- * @property float $to_hour
+ * @property string $from_hour
+ * @property string $to_hour
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Database\Factories\MasterFactory factory(...$parameters)

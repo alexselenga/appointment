@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Appointment
@@ -19,22 +21,24 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Master $master
  * @property-read \App\Models\Service $service
  * @method static \Database\Factories\AppointmentFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Appointment newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Appointment newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Appointment query()
- * @method static \Illuminate\Database\Eloquent\Builder|Appointment whereAppointmentTime($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Appointment whereClientName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Appointment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Appointment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Appointment whereMasterId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Appointment wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Appointment whereServiceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Appointment whereUpdatedAt($value)
+ * @method static Builder|Appointment newModelQuery()
+ * @method static Builder|Appointment newQuery()
+ * @method static Builder|Appointment query()
+ * @method static Builder|Appointment whereAppointmentTime($value)
+ * @method static Builder|Appointment whereClientName($value)
+ * @method static Builder|Appointment whereCreatedAt($value)
+ * @method static Builder|Appointment whereId($value)
+ * @method static Builder|Appointment whereMasterId($value)
+ * @method static Builder|Appointment wherePhone($value)
+ * @method static Builder|Appointment whereServiceId($value)
+ * @method static Builder|Appointment whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Appointment extends Model
 {
     use HasFactory;
+
+    const NEAR_DAYS_COUNT = 7;
 
     protected $fillable = ['client_name', 'phone', 'master_id', 'service_id', 'appointment_time'];
 
@@ -44,5 +48,21 @@ class Appointment extends Model
 
     public function service() {
         return $this->belongsTo(Service::class);
+    }
+
+    /**
+     * Scope a query to only include the first 7 days records by appointment time
+     *
+     * @param  Builder $query
+     * @return Builder
+     */
+    public function scopeSevenDays(Builder $query)
+    {
+        $fromDate = Carbon::today();
+        $toDate = Carbon::today()->addDays(static::NEAR_DAYS_COUNT - 1);
+
+        return $query
+            ->whereDate('appointment_time', '>=', $fromDate->toDateString())
+            ->whereDate('appointment_time', '<=', $toDate->toDateString());
     }
 }
